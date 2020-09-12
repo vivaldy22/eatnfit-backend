@@ -39,7 +39,7 @@ func InitDB() (*sql.DB, error) {
 
 func RunServer(db *sql.DB) {
 	host := viper.ViperGetEnv("GRPC_AUTH_HOST", "localhost")
-	port := viper.ViperGetEnv("PORT", "1010")
+	port := viper.ViperGetEnv("GRPC_AUTH_PORT", "1010")
 
 	listener, err := net.Listen("tcp", host+":"+port)
 	if err != nil {
