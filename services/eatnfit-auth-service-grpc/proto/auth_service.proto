@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package auth_proto;
+
+import "google/protobuf/empty.proto";
+
+message User {
+  string user_id = 1;
+  string user_email = 2;
+  string user_password = 3;
+  string user_f_name = 4;
+  string user_l_name = 5;
+  string user_gender = 6;
+  string user_balance = 7;
+  string user_level = 8;
+  string user_status = 9;
+}
+
+message UserRegister {
+  string user_email = 1;
+  string user_password = 2;
+  string user_f_name = 3;
+  string user_l_name = 4;
+  string user_gender = 5;
+}
+
+message Level {
+  string level_id = 1;
+  string level_name = 2;
+  string level_status = 3;
+}
+
+message UserList {
+  repeated User list = 1;
+}
+
+message LevelList {
+  repeated Level list = 1;
+}
+
+message ID {
+  string id = 1;
+}
+
+message Email {
+  string email = 1;
+}
+
+message UserUpdateRequest {
+  ID id = 1;
+  User user = 2;
+}
+
+message LevelUpdateRequest {
+  ID id = 1;
+  Level level = 2;
+}
+
+message LoginCredentials {
+  string user_email = 1;
+  string user_password = 2;
+}
+
+message TokenCredentials {
+  string user_email = 1;
+  string hmac_secret = 2;
+}
+
+message Token {
+  string token = 1;
+}
+
+message LoginResponse {
+  User user = 1;
+  string token = 2;
+}
+
+message Pagination {
+  string page = 1;
+  string limit = 2;
+  string keyword = 3;
+}
+
+message Total {
+  string total_data = 1;
+}
+
+service UserCRUD {
+  rpc GetAll(Pagination) returns (UserList);
+  rpc GetTotal(google.protobuf.Empty) returns (Total);
+  rpc GetByID(ID) returns (User);
+  rpc GetByEmail(Email) returns (User);
+  rpc Create(User) returns (User);
+  rpc CreateByAdmin(User) returns (User);
+  rpc Update(UserUpdateRequest) returns (User);
+  rpc Delete(ID) returns (google.protobuf.Empty);
+}
+
+service LevelCRUD {
+  rpc GetAll(google.protobuf.Empty) returns (LevelList);
+  rpc GetByID(ID) returns (Level);
+  rpc Create(Level) returns (Level);
+  rpc Update(LevelUpdateRequest) returns (Level);
+  rpc Delete(ID) returns (google.protobuf.Empty);
+}
+
+service JWTToken {
+  rpc GenerateToken(TokenCredentials) returns (Token);
+}
